@@ -32,21 +32,30 @@ class ProjectHelper:
         wd.find_element_by_name("description").send_keys(project.description)
 
 
-
-    def select_project_by_id(self, id):
-        wd = self.app.wd
-        wd.find_element_by_css_selector("a[href='manage_proj_edit_page.php?project_id=%s']" % id).click()
-
     project_cache = None
+
+    def delete_project(self,project):
+        wd = self.app.wd
+        self.open_project_page()
+        wd.find_element_by_xpath("//a[text()='%s']" %project.name).click()
+        wd.find_element_by_xpath("//input[@value='Delete Project']").click()
+        wd.find_element_by_xpath("//input[@value='Delete Project']").click()
+        self.project_cache = None
+
 
     def get_projects_list(self):
         if self.project_cache is None:
             wd = self.app.wd
             self.open_project_page()
             self.project_cache = []
-            for element in wd.find_elements_by_css_selector("tr[class*='row']"):
+            rows = wd.find_elements_by_xpath("//table[@class='width100']//tr[starts-with(@class, 'row-')]")
+            for element in rows[1:]:
                 cells = element.find_elements_by_tag_name("td")
                 name = cells[0].text
-                self.project_cache.append(Project(name=name))
-            self.project_cache.pop(0)
-        return list(self.project_cache)
+                status = cells[1].text
+                viewStatus = cells[3].text
+                description = cells[4].text
+                self.project_cache.append(Project(name=name, status=status, viewStatus=viewStatus,
+                                                  description=description))
+        return self.project_cache
+

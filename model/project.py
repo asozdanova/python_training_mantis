@@ -16,7 +16,8 @@ class Project:
 
     def __eq__(self, other):
         return (self.id is None or other.id is None or self.id == other.id) and \
-        (self.name == other.name)
+            (self.name == other.name)
+        # (self.projectName == other.projectName or self.projectName is None or other.projectName is None)
 
     def id_or_max(self):
         if self.id:
