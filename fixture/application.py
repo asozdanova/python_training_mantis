@@ -7,7 +7,7 @@ from fixture.mail import MailHelper
 from fixture.soap import SoapHelper
 
 class Application:
-    def __init__(self,  browser, base_url):
+    def __init__(self,  browser, config):
         if browser == "chrome":
             self.wd = webdriver.Chrome()
         elif browser == "firefox":
@@ -22,7 +22,9 @@ class Application:
         self.signup = SignupHelper(self)
         self.mail = MailHelper(self)
         self.soap = SoapHelper(self)
-        self.base_url = base_url
+        self.config = config
+        self.base_url = config['web']['baseUrl']
+        #self.base_url = base_url
 
     def is_valid(self):
         try:
