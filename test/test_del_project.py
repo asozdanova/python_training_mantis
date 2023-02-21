@@ -3,7 +3,6 @@ import random
 
 
 def test_del_project(app):
-    app.session.login("administrator", "root")
     if len(app.project.get_projects_list()) == 0:
         app.project.create(Project(name="Test3", status="release", viewStatus="public",
                  description="test",inherit_global=True))
@@ -12,3 +11,5 @@ def test_del_project(app):
     app.project.delete_project(project)
     new_projects = app.project.get_projects_list()
     assert len(old_projects) -1 == len(new_projects)
+    old_projects.remove(project)
+    assert sorted(old_projects, key=(lambda x: x.name)) == sorted(new_projects, key=(lambda x: x.name))

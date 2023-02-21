@@ -47,7 +47,8 @@ class ProjectHelper:
         if self.project_cache is None:
             wd = self.app.wd
             self.open_project_page()
-            self.project_cache = []
+            #self.project_cache = []
+            project_list = []
             rows = wd.find_elements_by_xpath("//table[@class='width100']//tr[starts-with(@class, 'row-')]")
             for element in rows[1:]:
                 cells = element.find_elements_by_tag_name("td")
@@ -55,7 +56,9 @@ class ProjectHelper:
                 status = cells[1].text
                 viewStatus = cells[3].text
                 description = cells[4].text
-                self.project_cache.append(Project(name=name, status=status, viewStatus=viewStatus,
-                                                  description=description))
-        return self.project_cache
+                #self.project_cache.append(Project(name=name, status=status, viewStatus=viewStatus,
+                                                  #description=description))
+                project_list.append(Project(name=name, id=id,status=status, viewStatus=viewStatus,description=description))
+        #return self.project_cache
+        return list(project_list)
 
